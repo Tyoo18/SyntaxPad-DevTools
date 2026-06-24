@@ -132,21 +132,21 @@ export default function StackedCards({
               }}
               className={`absolute w-full p-4 border rounded-lg transition-colors duration-300 ${
                 offsetDistance === 0
-                  ? "border-accent-cyan shadow-lg bg-card-bg"
-                  : "border-border-subtle bg-card-bg/80 backdrop-blur-sm"
+                  ? "border-(--color-accent) shadow-lg bg-(--color-surface)"
+                  : "border-(--color-border) bg-(--color-surface)/80 backdrop-blur-sm"
               }`}
             >
               <div className="flex items-center justify-between w-full">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-white">
+                <span className="font-mono text-sm font-bold uppercase tracking-wider text-(--color-text)">
                   {tool.title}
                 </span>
                 {tool.status === "soon" && (
-                  <span className="text-[8px] font-mono border border-brand-slate/30 text-brand-slate px-1 uppercase scale-90">
+                  <span className="text-[10px] font-mono border border-(--color-border) text-(--color-muted) px-1 uppercase scale-90">
                     Soon
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-brand-slate/80 font-sans mt-1.5 leading-relaxed truncate">
+              <p className="text-sm text-(--color-muted) font-sans mt-1.5 leading-relaxed truncate">
                 {tool.desc}
               </p>
             </motion.div>
@@ -155,8 +155,8 @@ export default function StackedCards({
       </div>
 
       {/* fade overlays */}
-      <div className="absolute top-0 left-0 right-0 h-10 bg-linear-to-b from-page-bg to-transparent pointer-events-none z-20" />
-      <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-page-bg to-transparent pointer-events-none z-20" />
+      <div className="absolute top-0 left-0 right-0 h-10 bg-linear-to-b from-(--color-bg) to-transparent pointer-events-none z-20" />
+      <div className="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-(--color-bg) to-transparent pointer-events-none z-20" />
     </div>
   );
 }

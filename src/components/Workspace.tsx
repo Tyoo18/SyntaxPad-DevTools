@@ -1,6 +1,6 @@
 "use client";
 
-// [INIT]: Import tool components and type definitions
+// [INIT]: Import tool components
 import ReadmeBuilder from "@/tools/readme-builder";
 import CommitBuilder from "@/tools/commit-builder";
 import EnvBoilerplate from "@/tools/env-boilerplate";
@@ -20,16 +20,16 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
       .replace(/\b\w/g, (l) => l.toUpperCase());
 
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-card-bg p-8 text-center">
-        <span className="font-mono text-2xl font-bold text-white/80 tracking-tight">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-(--color-surface) p-8 text-center">
+        <span className="font-mono text-2xl font-bold text-(--color-text)/80 tracking-tight">
           {toolName}
         </span>
-        <div className="mt-3 inline-block border border-brand-accent/30 px-3 py-1 rounded-sm">
-          <span className="text-[10px] font-mono text-brand-accent tracking-widest uppercase">
+        <div className="mt-3 inline-block border border-(--color-accent)/30 px-3 py-1 rounded-sm">
+          <span className="text-[10px] font-mono text-(--color-accent) tracking-widest uppercase">
             [ PIPELINE NODE // UNDER DEVELOPMENT ]
           </span>
         </div>
-        <p className="mt-4 max-w-sm text-sm text-brand-slate/60 font-sans leading-relaxed">
+        <p className="mt-4 max-w-sm text-sm text-(--color-muted) font-sans leading-relaxed">
           This utility is currently in the pipeline and will be available in the
           next version rollout. Stay tuned for instant text generation magic.
         </p>
@@ -52,7 +52,7 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
         return <EnvBoilerplate />;
       default:
         return (
-          <div className="w-full h-full flex items-center justify-center text-brand-slate/40 font-mono text-sm">
+          <div className="w-full h-full flex items-center justify-center text-(--color-muted) font-mono text-sm">
             Select a tool from the carousel.
           </div>
         );
@@ -60,8 +60,8 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
   };
 
   return (
-    // [STYLE]: Fixed height container with border and card background
-    <div className="w-full h-135 bg-card-bg border border-border-subtle rounded-lg overflow-hidden">
+    // [STYLE]: Fixed height container with surface background and border
+    <div className="w-full h-135 bg-(--color-surface) border border-(--color-border) rounded-lg overflow-hidden">
       {renderContent()}
     </div>
   );

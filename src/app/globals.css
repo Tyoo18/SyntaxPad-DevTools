@@ -1,46 +1,76 @@
 @import "tailwindcss";
 
-/* [STYLE]: Register custom slate-industrial theme variables */
+/* [STYLE]: Register fonts and custom spacing tokens */
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-mono);
-
-  /* existing brand colors */
-  --color-brand-base: #161823;
-  --color-brand-slate: #75878a;
-  --color-brand-accent: #44cef6;
-
-  /* NEW design tokens per PRD */
-  --color-page-bg: #0d0f12;
-  --color-card-bg: #13161b;
-  --color-border-subtle: #1f2329;
-  --color-accent-cyan: #22d3ee;
-
-  /* [STYLE]: Custom spacing for fixed workspace height */
   --spacing-135: 540px;
 }
 
+/* Light theme (default) */
 :root {
-  --background: var(--color-page-bg);
-  --foreground: #e2e8f0;
+  --color-bg: #f4f6f9;
+  --color-surface: #ffffff;
+  --color-elevated: #eef1f5;
+  --color-border: #00000010;
+  --color-accent: #122c4f;
+  --color-accent-muted: #5b88b2;
+  --color-text: #0a0e17;
+  --color-muted: #6b7f96;
 }
 
+/* Dark theme */
+.dark {
+  --color-bg: #0a0e17;
+  --color-surface: #122c4f;
+  --color-elevated: #1a3a63;
+  --color-border: #ffffff12;
+  --color-accent: #5b88b2;
+  --color-accent-muted: #3a6491;
+  --color-text: #f0f4f8;
+  --color-muted: #5b88b2;
+}
+
+/* Base body */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  position: relative;
 }
 
-/* [STYLE]: Flatten elements and match structural sketch lines */
+/* Dot grid overlay (adapts to theme) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    var(--color-accent-muted) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All content sits above the dot grid */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-page-bg);
+  background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-brand-slate);
+  background: var(--color-muted);
   opacity: 0.3;
 }
