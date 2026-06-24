@@ -20,8 +20,6 @@ export default function ReadmeBuilder() {
   });
   const [github, setGithub] = useState<string>("yourusername");
   const [twitter, setTwitter] = useState<string>("yourhandle");
-
-  // [STATE]: Temporary user feedback state for clipboard actions
   const [copyStatus, setCopyStatus] = useState<string>("Copy");
 
   // [CALC]: Compile real-time dynamic markdown text templates
@@ -47,16 +45,10 @@ ${Object.entries(tech)
 ## Installation
 \`\`\`bash
 npm install
-# or
-yarn install
 \`\`\`
 
 ## Author
-- GitHub: [@${github}](https://github.com/${github})
-- Twitter: [@${twitter}](https://twitter.com/${twitter})
-
-## License
-MIT`;
+- Twitter: [@${twitter}](https://twitter.com/${twitter})`;
   }, [title, desc, tech, github, twitter]);
 
   // [HANDLER]: Execute secure native browser clipboard copying actions
@@ -70,119 +62,110 @@ MIT`;
     }
   };
 
-  // [RENDER]: Main interactive grid interface layout split
   return (
+    // [STYLE]: Grid container locked strictly to parent workspace height
     <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 overflow-hidden">
       {/* Left Column – Inputs */}
-      <div className="p-6 border-b md:border-b-0 md:border-r border-(--color-border) flex flex-col h-full overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
-        <div className="flex-1 space-y-4">
-          <span className="text-sm font-medium text-(--color-muted) block mb-4">
-            Input
-          </span>
+      <div className="p-6 border-b md:border-b-0 md:border-r border-(--color-border) flex flex-col space-y-3.5 h-full overflow-y-auto scrollbar-none">
+        <span className="text-sm font-medium text-(--color-muted) block mb-0.5">
+          README.md Builder
+        </span>
 
-          {/* Project Title Input Element */}
-          <div>
-            <label className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-1">
-              Project Title
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-2 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors"
-            />
-          </div>
+        <div className="grid grid-cols-[100px_1fr] items-center gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider">
+            Title
+          </label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-1.5 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors"
+          />
+        </div>
 
-          {/* Project Description Textarea Element */}
-          <div>
-            <label className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-1">
-              Short Description
-            </label>
-            <textarea
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              rows={3}
-              className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-2 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors resize-y"
-            />
-          </div>
+        <div className="grid grid-cols-[100px_1fr] items-start gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider pt-1.5">
+            Description
+          </label>
+          <textarea
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+            rows={2}
+            className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-1.5 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) resize-none transition-colors"
+          />
+        </div>
 
-          {/* Tech Stack Multi-Selection Checkbox Core Grid */}
-          <div>
-            <span className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-2">
-              Tech Stack
-            </span>
-            <div className="grid grid-cols-2 gap-2">
-              {Object.entries(tech).map(([t, checked]) => (
-                <label
-                  key={t}
-                  className="flex items-center gap-2 text-sm font-mono text-(--color-text)"
-                >
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={(e) =>
-                      setTech((prev) => ({ ...prev, [t]: e.target.checked }))
-                    }
-                    className="accent-(--color-accent)"
-                  />
-                  {t}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Author Handle Metadata Integration Fields */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-1">
-                GitHub Username
+        <div className="grid grid-cols-[100px_1fr] items-start gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider pt-0.5">
+            Tech Stack
+          </label>
+          <div className="grid grid-cols-2 gap-x-2 gap-y-1.5">
+            {Object.entries(tech).map(([t, checked]) => (
+              <label
+                key={t}
+                className="flex items-center gap-2 text-xs font-mono text-(--color-text) cursor-pointer select-none"
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={(e) =>
+                    setTech((prev) => ({ ...prev, [t]: e.target.checked }))
+                  }
+                  className="accent-(--color-accent)"
+                />
+                {t}
               </label>
-              <input
-                type="text"
-                value={github}
-                onChange={(e) => setGithub(e.target.value)}
-                className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-2 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-1">
-                Twitter Handle
-              </label>
-              <input
-                type="text"
-                value={twitter}
-                onChange={(e) => setTwitter(e.target.value)}
-                className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-2 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors"
-              />
-            </div>
+            ))}
           </div>
+        </div>
+
+        <div className="grid grid-cols-[100px_1fr] items-center gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider">
+            GitHub
+          </label>
+          <input
+            type="text"
+            value={github}
+            onChange={(e) => setGithub(e.target.value)}
+            className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-1.5 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors"
+          />
+        </div>
+
+        <div className="grid grid-cols-[100px_1fr] items-center gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider">
+            Twitter
+          </label>
+          <input
+            type="text"
+            value={twitter}
+            onChange={(e) => setTwitter(e.target.value)}
+            className="w-full bg-(--color-elevated) border border-(--color-border) rounded-lg px-3 py-1.5 text-sm font-mono text-(--color-text) focus:outline-none focus:border-(--color-accent) transition-colors"
+          />
         </div>
       </div>
 
-      {/* Right Column – Output Preview */}
-      <div className="p-6 bg-(--color-elevated)/40 flex flex-col h-full relative overflow-hidden">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-(--color-muted)">
-            Preview
+      {/* Right Column – Fluid Symmetrical Output matching the bottom baseline padding */}
+      <div className="p-6 bg-(--color-elevated)/40 flex flex-col h-full relative">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)">
+            Preview Node
           </span>
-          <span className="text-xs text-(--color-muted)">Markdown</span>
+          <span className="text-xs font-mono text-(--color-muted)/60">
+            MD_ENGINE
+          </span>
         </div>
 
-        {/* [STYLE]: Structural flexible container managing nested absolute scroll layers */}
-        <div className="flex-1 min-h-0 flex flex-col">
-          {/* [RENDER]: Encapsulated layout block with synchronized design syntax and hidden scroll tracks */}
-          <pre className="flex-1 font-mono text-sm text-(--color-text) whitespace-pre-wrap bg-(--color-bg)/50 p-4 border border-(--color-border) rounded-lg overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden">
+        {/* [STYLE]: Normalized preview box container that utilizes the remaining height completely */}
+        <div className="flex-1 min-h-0 relative">
+          <pre className="w-full h-full font-mono text-xs text-(--color-text) whitespace-pre-wrap bg-(--color-bg)/50 p-4 border border-(--color-border) rounded-lg overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden pr-16">
             {output}
           </pre>
-        </div>
 
-        {/* [RENDER]: Functional interactive copy trigger component node */}
-        <div className="flex justify-end mt-4">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 px-4 py-2 bg-(--color-elevated) text-(--color-text) rounded-md text-sm font-medium hover:text-(--color-accent) transition-colors duration-200"
+            className="absolute bottom-3 right-3 flex items-center gap-2 px-3 py-1.5 bg-(--color-elevated) border border-(--color-border) text-(--color-text) rounded-md text-xs font-medium hover:text-(--color-accent) transition-colors shadow-sm"
           >
-            <Copy className="w-4 h-4" />
+            <Copy className="w-3.5 h-3.5" />
             <span>{copyStatus}</span>
           </button>
         </div>

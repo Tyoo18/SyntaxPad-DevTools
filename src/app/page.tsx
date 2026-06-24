@@ -37,13 +37,16 @@ export default function Home() {
             <HeroSection />
 
             {/* Grid with fixed left column width (320px) */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-start overflow-hidden">
-              <div className="flex justify-center items-center h-full">
+            {/* [STYLE]: Layout grid configuration tuned with vertical center alignment */}
+            <div className="flex-1 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-center overflow-hidden">
+              {/* [RENDER]: Centered container node for stacked utility tool selection cards */}
+              <div className="flex justify-center items-stretch h-full mt-48">
                 <StackedCards
                   activeTool={activeTool}
                   onSelectTool={setActiveTool}
                 />
               </div>
+              {/* [RENDER]: Workspace viewport component container rendering selected node layout */}
               <div className="h-full w-full">
                 <Workspace activeTool={activeTool} />
               </div>
@@ -54,7 +57,7 @@ export default function Home() {
 
       {/* ─── FOOTER ─── */}
       {/* [RENDER]: Application Footer Band with Support Call-To-Action */}
-      <footer className="w-full border-t border-border px-6 md:px-10 bg-bg z-50 lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-14 flex items-center">
+      <footer className="w-full border-t border-border px-6 md:px-10 bg-bg z-50 lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-24 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted text-center sm:text-left max-w-xl">
             SyntaxPad is free and always will be. If it saved you time today,

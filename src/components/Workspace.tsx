@@ -1,10 +1,9 @@
 "use client";
 
-// [INIT]: Import tool components and icons
+// [INIT]: Import tool components and dependencies
 import ReadmeBuilder from "@/tools/readme-builder";
 import CommitBuilder from "@/tools/commit-builder";
 import EnvBoilerplate from "@/tools/env-boilerplate";
-import { Copy } from "lucide-react";
 
 interface WorkspaceProps {
   activeTool: string;
@@ -21,7 +20,7 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
       .replace(/\b\w/g, (l) => l.toUpperCase());
 
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-(--color-surface) p-8 text-center rounded-2xl">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-(--color-surface) p-8 text-center">
         <span className="font-mono text-2xl font-bold text-(--color-text)/80 tracking-tight">
           {toolName}
         </span>
@@ -61,8 +60,8 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
   };
 
   return (
-    // [STYLE]: Fixed height container with rounded-2xl surface
-    <div className="w-full h-135 bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
+    // [STYLE]: Locked fixed height layout container that guarantees zero layout shifting or chin gaps
+    <div className="w-full h-116 bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
       {renderContent()}
     </div>
   );

@@ -1,10 +1,13 @@
 "use client";
 
+// [INIT]: Import required React hooks and UI icons
 import { useState, useMemo } from "react";
 import { Copy } from "lucide-react";
 
 export default function EnvBoilerplate() {
+  // [STATE]: Active framework structural key value
   const [framework, setFramework] = useState<"next" | "expo">("next");
+  // [STATE]: Integration checkbox dataset collection parameters
   const [integrations, setIntegrations] = useState<Record<string, boolean>>({
     supabase: false,
     firebase: false,
@@ -12,9 +15,9 @@ export default function EnvBoilerplate() {
     nextauth: false,
     stripe: false,
   });
-
   const [copyStatus, setCopyStatus] = useState<string>("Copy");
 
+  // [CALC]: Process dynamic key parameters into plain environment configurations
   const output = useMemo(() => {
     const prefix = framework === "next" ? "NEXT_PUBLIC" : "EXPO_PUBLIC";
     const vars: string[] = [];
@@ -33,22 +36,18 @@ export default function EnvBoilerplate() {
       vars.push(`DATABASE_URL=your_database_url_here`);
     }
     if (integrations.nextauth) {
-      vars.push(`# NextAuth`);
-      vars.push(`NEXTAUTH_URL=http://localhost:3000`);
-      vars.push(`NEXTAUTH_SECRET=your-secret-here`);
+      vars.push(`NEXTAUTH_SECRET=your_nextauth_secret_here`);
     }
     if (integrations.stripe) {
-      vars.push(`# Stripe`);
-      vars.push(`STRIPE_SECRET_KEY=sk_test_...`);
-      vars.push(`STRIPE_PUBLISHABLE_KEY=pk_test_...`);
-      vars.push(`STRIPE_WEBHOOK_SECRET=whsec_...`);
+      vars.push(`STRIPE_API_KEY=your_stripe_api_key_here`);
     }
     if (vars.length === 0) {
-      vars.push("# Select at least one integration to see variables.");
+      vars.push("# Select integrations to populate boilerplate variables.");
     }
     return vars.join("\n");
   }, [framework, integrations]);
 
+  // [HANDLER]: Execute secure native browser clipboard copying actions
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(output);
@@ -60,92 +59,91 @@ export default function EnvBoilerplate() {
   };
 
   return (
+    // [STYLE]: Shared design framework ensuring identical heights across tools
     <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 overflow-hidden">
       {/* Left Column – Inputs */}
-      <div className="p-6 border-b md:border-b-0 md:border-r border-(--color-border) flex flex-col h-full overflow-y-auto">
-        <div className="flex-1 space-y-4">
-          <span className="text-sm font-medium text-(--color-muted) block mb-4">
-            Input
-          </span>
-          {/* Framework Toggle */}
-          <div>
-            <span className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-2">
-              Target Framework
-            </span>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2 text-sm font-mono text-(--color-text)">
-                <input
-                  type="radio"
-                  value="next"
-                  checked={framework === "next"}
-                  onChange={() => setFramework("next")}
-                  className="accent-(--color-accent)"
-                />
-                Next.js
-              </label>
-              <label className="flex items-center gap-2 text-sm font-mono text-(--color-text)">
-                <input
-                  type="radio"
-                  value="expo"
-                  checked={framework === "expo"}
-                  onChange={() => setFramework("expo")}
-                  className="accent-(--color-accent)"
-                />
-                Expo
-              </label>
-            </div>
+      <div className="p-6 border-b md:border-b-0 md:border-r border-(--color-border) flex flex-col space-y-4 h-full overflow-y-auto scrollbar-none">
+        <span className="text-sm font-medium text-(--color-muted) block mb-0.5">
+          .env Boilerplate
+        </span>
+
+        <div className="grid grid-cols-[100px_1fr] items-center gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider">
+            Framework
+          </label>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2 text-sm font-mono text-(--color-text) cursor-pointer select-none">
+              <input
+                type="radio"
+                value="next"
+                checked={framework === "next"}
+                onChange={() => setFramework("next")}
+                className="accent-(--color-accent)"
+              />
+              Next.js
+            </label>
+            <label className="flex items-center gap-2 text-sm font-mono text-(--color-text) cursor-pointer select-none">
+              <input
+                type="radio"
+                value="expo"
+                checked={framework === "expo"}
+                onChange={() => setFramework("expo")}
+                className="accent-(--color-accent)"
+              />
+              Expo
+            </label>
           </div>
-          {/* Integrations */}
-          <div>
-            <span className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-2">
-              Integrations
-            </span>
-            <div className="space-y-1.5">
-              {Object.entries(integrations).map(([key, checked]) => (
-                <label
-                  key={key}
-                  className="flex items-center gap-2 text-sm font-mono text-(--color-text)"
-                >
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={(e) =>
-                      setIntegrations((prev) => ({
-                        ...prev,
-                        [key]: e.target.checked,
-                      }))
-                    }
-                    className="accent-(--color-accent)"
-                  />
-                  {key === "nextauth"
-                    ? "NextAuth"
-                    : key.charAt(0).toUpperCase() + key.slice(1)}
-                </label>
-              ))}
-            </div>
+        </div>
+
+        <div className="grid grid-cols-[100px_1fr] items-start gap-3">
+          <label className="text-xs font-medium text-(--color-muted) uppercase tracking-wider pt-0.5">
+            Integrations
+          </label>
+          <div className="space-y-2">
+            {Object.entries(integrations).map(([key, checked]) => (
+              <label
+                key={key}
+                className="flex items-center gap-2 text-sm font-mono text-(--color-text) cursor-pointer select-none"
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={(e) =>
+                    setIntegrations((prev) => ({
+                      ...prev,
+                      [key]: e.target.checked,
+                    }))
+                  }
+                  className="accent-(--color-accent)"
+                />
+                {key === "nextauth" ? "NextAuth" : key.toUpperCase()}
+              </label>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Right Column – Output Preview */}
-      <div className="p-6 bg-(--color-elevated)/40 flex flex-col h-full relative overflow-hidden">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-(--color-muted)">
-            Preview
+      {/* Right Column – Symmetrical Output Box perfectly matching the layout baseline */}
+      <div className="p-6 bg-(--color-elevated)/40 flex flex-col h-full relative">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)">
+            Preview Node
           </span>
-          <span className="text-xs text-(--color-muted)">.env</span>
+          <span className="text-xs font-mono text-(--color-muted)/60">
+            ENV_ENGINE
+          </span>
         </div>
-        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin">
-          <pre className="font-mono text-sm text-(--color-text) whitespace-pre-wrap break-all bg-(--color-bg)/50 p-4 border border-(--color-border) rounded-lg h-full">
+
+        <div className="flex-1 min-h-0 relative">
+          <pre className="w-full h-full font-mono text-xs text-(--color-text) whitespace-pre-wrap break-all bg-(--color-bg)/50 p-4 border border-(--color-border) rounded-lg overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden pr-16">
             {output}
           </pre>
-        </div>
-        <div className="flex justify-end mt-4">
+
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 px-4 py-2 bg-(--color-elevated) text-(--color-text) rounded-md text-sm font-medium hover:text-(--color-accent) transition-colors duration-200"
+            className="absolute bottom-3 right-3 flex items-center gap-2 px-3 py-1.5 bg-(--color-elevated) border border-(--color-border) text-(--color-text) rounded-md text-xs font-medium hover:text-(--color-accent) transition-colors shadow-sm"
           >
-            <Copy className="w-4 h-4" />
+            <Copy className="w-3.5 h-3.5" />
             <span>{copyStatus}</span>
           </button>
         </div>
