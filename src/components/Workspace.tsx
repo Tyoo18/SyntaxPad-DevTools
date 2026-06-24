@@ -1,9 +1,10 @@
 "use client";
 
-// [INIT]: Import tool components
+// [INIT]: Import tool components and icons
 import ReadmeBuilder from "@/tools/readme-builder";
 import CommitBuilder from "@/tools/commit-builder";
 import EnvBoilerplate from "@/tools/env-boilerplate";
+import { Copy } from "lucide-react";
 
 interface WorkspaceProps {
   activeTool: string;
@@ -20,11 +21,11 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
       .replace(/\b\w/g, (l) => l.toUpperCase());
 
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-(--color-surface) p-8 text-center">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-(--color-surface) p-8 text-center rounded-2xl">
         <span className="font-mono text-2xl font-bold text-(--color-text)/80 tracking-tight">
           {toolName}
         </span>
-        <div className="mt-3 inline-block border border-(--color-accent)/30 px-3 py-1 rounded-sm">
+        <div className="mt-3 inline-block border border-(--color-accent)/30 px-3 py-1 rounded-full">
           <span className="text-[10px] font-mono text-(--color-accent) tracking-widest uppercase">
             [ PIPELINE NODE // UNDER DEVELOPMENT ]
           </span>
@@ -60,8 +61,8 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
   };
 
   return (
-    // [STYLE]: Fixed height container with surface background and border
-    <div className="w-full h-135 bg-(--color-surface) border border-(--color-border) rounded-lg overflow-hidden">
+    // [STYLE]: Fixed height container with rounded-2xl surface
+    <div className="w-full h-135 bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
       {renderContent()}
     </div>
   );

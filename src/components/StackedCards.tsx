@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface StackedCardsProps {
@@ -52,7 +52,8 @@ export default function StackedCards({
   onSelectTool,
 }: StackedCardsProps) {
   const [virtualIndex, setVirtualIndex] = useState<number>(0);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  // [STATE]: Animation lock using ref (synchronous, no re-render)
+  const isAnimating = useRef<boolean>(false);
   const totalItems = TOOLS_REGISTRY.length;
 
   const wrappedIndex = ((virtualIndex % totalItems) + totalItems) % totalItems;
@@ -61,31 +62,32 @@ export default function StackedCards({
     onSelectTool(TOOLS_REGISTRY[wrappedIndex].id);
   }, [wrappedIndex, onSelectTool]);
 
-  const handleWheelRotation = (e: React.WheelEvent) => {
-    if (isAnimating) return;
-    if (Math.abs(e.deltaY) < 15) return;
+  // [HANDLER]: Step the carousel with lock
+  const handleStep = (direction: number) => {
+    if (isAnimating.current) return;
+    isAnimating.current = true;
+    setVirtualIndex((prev) => prev + direction);
+  };
 
-    setIsAnimating(true);
-    if (e.deltaY > 0) {
-      setVirtualIndex((prev) => prev + 1);
-    } else {
-      setVirtualIndex((prev) => prev - 1);
-    }
-    setTimeout(() => setIsAnimating(false), 240);
+  // [HANDLER]: Animation complete – unlock
+  const handleAnimationComplete = () => {
+    isAnimating.current = false;
+  };
+
+  const handleWheelRotation = (e: React.WheelEvent) => {
+    if (isAnimating.current) return;
+    if (Math.abs(e.deltaY) < 15) return;
+    const direction = e.deltaY > 0 ? 1 : -1;
+    handleStep(direction);
   };
 
   const handleDragInteractionEnd = (event: any, info: any) => {
-    if (isAnimating) return;
+    if (isAnimating.current) return;
     const threshold = 30;
-
     if (info.offset.y < -threshold) {
-      setIsAnimating(true);
-      setVirtualIndex((prev) => prev + 1);
-      setTimeout(() => setIsAnimating(false), 240);
+      handleStep(1);
     } else if (info.offset.y > threshold) {
-      setIsAnimating(true);
-      setVirtualIndex((prev) => prev + 1);
-      setTimeout(() => setIsAnimating(false), 240);
+      handleStep(-1);
     }
   };
 
@@ -115,10 +117,12 @@ export default function StackedCards({
           const targetOpacity = offsetDistance === 0 ? 1 : 0.5;
           const targetZIndex = offsetDistance === 0 ? 20 : 10;
 
+          const isActive = offsetDistance === 0;
+
           return (
             <motion.div
               key={tool.id}
-              style={{ pointerEvents: offsetDistance === 0 ? "auto" : "none" }}
+              style={{ pointerEvents: isActive ? "auto" : "none" }}
               animate={{
                 y: targetY,
                 scale: targetScale,
@@ -130,10 +134,13 @@ export default function StackedCards({
                 stiffness: 260,
                 damping: 26,
               }}
-              className={`absolute w-full p-4 border rounded-lg transition-colors duration-300 ${
-                offsetDistance === 0
-                  ? "border-(--color-accent) shadow-lg bg-(--color-surface)"
-                  : "border-(--color-border) bg-(--color-surface)/80 backdrop-blur-sm"
+              onAnimationComplete={
+                isActive ? handleAnimationComplete : undefined
+              }
+              className={`absolute w-full p-4 border rounded-xl transition-colors duration-300 ${
+                isActive
+                  ? "border-(--color-accent) shadow-(--card-shadow) bg-(--color-surface)"
+                  : "border-(--card-border) bg-(--color-surface)/80 backdrop-blur-sm shadow-sm"
               }`}
             >
               <div className="flex items-center justify-between w-full">
@@ -141,7 +148,7 @@ export default function StackedCards({
                   {tool.title}
                 </span>
                 {tool.status === "soon" && (
-                  <span className="text-[10px] font-mono border border-(--color-border) text-(--color-muted) px-1 uppercase scale-90">
+                  <span className="text-[10px] font-mono border border-(--color-border) text-(--color-muted) px-1 rounded-full uppercase scale-90">
                     Soon
                   </span>
                 )}

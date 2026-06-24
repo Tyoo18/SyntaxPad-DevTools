@@ -17,6 +17,9 @@
   --color-accent-muted: #5b88b2;
   --color-text: #0a0e17;
   --color-muted: #6b7f96;
+  /* Card borders for light mode */
+  --card-border: rgba(18, 44, 79, 0.15);
+  --card-shadow: 0 2px 8px rgba(18, 44, 79, 0.08);
 }
 
 /* Dark theme */
@@ -29,37 +32,55 @@
   --color-accent-muted: #3a6491;
   --color-text: #f0f4f8;
   --color-muted: #5b88b2;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --card-shadow: none;
 }
 
-/* Base body */
+/* Base body with layered background */
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  position: relative;
+  background-image:
+    radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      color-mix(in srgb, var(--color-accent) 15%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-accent-muted) 20%, transparent) 1px,
+      transparent 1px
+    );
+  background-size:
+    100% 100%,
+    28px 28px;
 }
 
-/* Dot grid overlay (adapts to theme) */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(
-    circle,
-    var(--color-accent-muted) 1px,
-    transparent 1px
-  );
-  background-size: 28px 28px;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* All content sits above the dot grid */
-body > * {
-  position: relative;
-  z-index: 1;
+/* Fallback if color-mix not supported */
+@supports not (color-mix(in srgb, red, blue)) {
+  body {
+    background-image:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        rgba(91, 136, 178, 0.15),
+        transparent
+      ),
+      radial-gradient(circle, rgba(91, 136, 178, 0.07) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      28px 28px;
+  }
+  .dark body {
+    background-image:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        rgba(91, 136, 178, 0.1),
+        transparent
+      ),
+      radial-gradient(circle, rgba(91, 136, 178, 0.07) 1px, transparent 1px);
+  }
 }
 
 /* Scrollbar styling */
@@ -73,4 +94,9 @@ body > * {
 ::-webkit-scrollbar-thumb {
   background: var(--color-muted);
   opacity: 0.3;
+}
+
+/* Utility for scrollbar-thin */
+.scrollbar-thin {
+  scrollbar-width: thin;
 }

@@ -1,19 +1,20 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { Copy } from "lucide-react";
 
 export default function EnvBoilerplate() {
-  // [STATE]: Framework and integrations
   const [framework, setFramework] = useState<"next" | "expo">("next");
   const [integrations, setIntegrations] = useState<Record<string, boolean>>({
     supabase: false,
     firebase: false,
     prisma: false,
+    nextauth: false,
+    stripe: false,
   });
 
-  const [copyStatus, setCopyStatus] = useState<string>("[ Copy to Clipboard ]");
+  const [copyStatus, setCopyStatus] = useState<string>("Copy");
 
-  // [CALC]: Generate .env content
   const output = useMemo(() => {
     const prefix = framework === "next" ? "NEXT_PUBLIC" : "EXPO_PUBLIC";
     const vars: string[] = [];
@@ -31,6 +32,17 @@ export default function EnvBoilerplate() {
     if (integrations.prisma) {
       vars.push(`DATABASE_URL=your_database_url_here`);
     }
+    if (integrations.nextauth) {
+      vars.push(`# NextAuth`);
+      vars.push(`NEXTAUTH_URL=http://localhost:3000`);
+      vars.push(`NEXTAUTH_SECRET=your-secret-here`);
+    }
+    if (integrations.stripe) {
+      vars.push(`# Stripe`);
+      vars.push(`STRIPE_SECRET_KEY=sk_test_...`);
+      vars.push(`STRIPE_PUBLISHABLE_KEY=pk_test_...`);
+      vars.push(`STRIPE_WEBHOOK_SECRET=whsec_...`);
+    }
     if (vars.length === 0) {
       vars.push("# Select at least one integration to see variables.");
     }
@@ -40,8 +52,8 @@ export default function EnvBoilerplate() {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(output);
-      setCopyStatus("[ Copied! ]");
-      setTimeout(() => setCopyStatus("[ Copy to Clipboard ]"), 1500);
+      setCopyStatus("Copied!");
+      setTimeout(() => setCopyStatus("Copy"), 1500);
     } catch (err) {
       console.error("Copy failed", err);
     }
@@ -49,35 +61,35 @@ export default function EnvBoilerplate() {
 
   return (
     <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 overflow-hidden">
-      {/* Left Column */}
-      <div className="p-6 border-b md:border-b-0 md:border-r border-border-subtle flex flex-col justify-between h-full overflow-y-auto">
-        <div className="space-y-4">
-          <span className="text-[10px] font-mono tracking-widest text-brand-slate uppercase block mb-4">
-            // 01. Input Configuration
+      {/* Left Column – Inputs */}
+      <div className="p-6 border-b md:border-b-0 md:border-r border-(--color-border) flex flex-col h-full overflow-y-auto">
+        <div className="flex-1 space-y-4">
+          <span className="text-sm font-medium text-(--color-muted) block mb-4">
+            Input
           </span>
           {/* Framework Toggle */}
           <div>
-            <span className="block text-[10px] font-mono text-brand-slate uppercase tracking-wider mb-2">
+            <span className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-2">
               Target Framework
             </span>
             <div className="flex gap-4">
-              <label className="flex items-center gap-2 text-sm font-mono text-white">
+              <label className="flex items-center gap-2 text-sm font-mono text-(--color-text)">
                 <input
                   type="radio"
                   value="next"
                   checked={framework === "next"}
                   onChange={() => setFramework("next")}
-                  className="accent-brand-accent"
+                  className="accent-(--color-accent)"
                 />
                 Next.js
               </label>
-              <label className="flex items-center gap-2 text-sm font-mono text-white">
+              <label className="flex items-center gap-2 text-sm font-mono text-(--color-text)">
                 <input
                   type="radio"
                   value="expo"
                   checked={framework === "expo"}
                   onChange={() => setFramework("expo")}
-                  className="accent-brand-accent"
+                  className="accent-(--color-accent)"
                 />
                 Expo
               </label>
@@ -85,14 +97,14 @@ export default function EnvBoilerplate() {
           </div>
           {/* Integrations */}
           <div>
-            <span className="block text-[10px] font-mono text-brand-slate uppercase tracking-wider mb-2">
+            <span className="block text-xs font-medium text-(--color-muted) uppercase tracking-wider mb-2">
               Integrations
             </span>
             <div className="space-y-1.5">
               {Object.entries(integrations).map(([key, checked]) => (
                 <label
                   key={key}
-                  className="flex items-center gap-2 text-xs font-mono text-brand-slate/80"
+                  className="flex items-center gap-2 text-sm font-mono text-(--color-text)"
                 >
                   <input
                     type="checkbox"
@@ -103,40 +115,38 @@ export default function EnvBoilerplate() {
                         [key]: e.target.checked,
                       }))
                     }
-                    className="accent-brand-accent w-3.5 h-3.5"
+                    className="accent-(--color-accent)"
                   />
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                  {key === "nextauth"
+                    ? "NextAuth"
+                    : key.charAt(0).toUpperCase() + key.slice(1)}
                 </label>
               ))}
             </div>
           </div>
         </div>
-        <div className="text-[10px] font-mono text-brand-slate/40 mt-4">
-          CTRL_SYS_READY
-        </div>
       </div>
 
-      {/* Right Column */}
-      <div className="p-6 bg-page-bg/40 flex flex-col justify-between h-full relative">
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-[10px] font-mono tracking-widest text-brand-accent uppercase block">
-              // 02. Live Preview Output
-            </span>
-            <span className="text-[10px] font-mono text-brand-slate">
-              FORMAT: ENV
-            </span>
-          </div>
-          <pre className="font-mono text-xs text-brand-slate/80 whitespace-pre-wrap bg-page-bg/50 p-4 border border-border-subtle rounded-sm h-[calc(100%-3rem)] overflow-y-auto">
+      {/* Right Column – Output Preview */}
+      <div className="p-6 bg-(--color-elevated)/40 flex flex-col h-full relative overflow-hidden">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-sm font-medium text-(--color-muted)">
+            Preview
+          </span>
+          <span className="text-xs text-(--color-muted)">.env</span>
+        </div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-thin">
+          <pre className="font-mono text-sm text-(--color-text) whitespace-pre-wrap break-all bg-(--color-bg)/50 p-4 border border-(--color-border) rounded-lg h-full">
             {output}
           </pre>
         </div>
         <div className="flex justify-end mt-4">
           <button
             onClick={handleCopy}
-            className="px-3 py-1 border border-brand-accent/40 text-brand-accent font-mono text-[10px] uppercase hover:bg-brand-accent/10 transition-all duration-200"
+            className="flex items-center gap-2 px-4 py-2 bg-(--color-elevated) text-(--color-text) rounded-md text-sm font-medium hover:text-(--color-accent) transition-colors duration-200"
           >
-            {copyStatus}
+            <Copy className="w-4 h-4" />
+            <span>{copyStatus}</span>
           </button>
         </div>
       </div>
