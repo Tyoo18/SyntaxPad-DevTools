@@ -5,7 +5,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-mono);
 
-  /* existing brand colors (kept for backward compatibility) */
+  /* existing brand colors */
   --color-brand-base: #161823;
   --color-brand-slate: #75878a;
   --color-brand-accent: #44cef6;
@@ -15,11 +15,14 @@
   --color-card-bg: #13161b;
   --color-border-subtle: #1f2329;
   --color-accent-cyan: #22d3ee;
+
+  /* [STYLE]: Custom spacing for fixed workspace height */
+  --spacing-135: 540px;
 }
 
 :root {
-  --background: var(--color-page-bg); /* use new page background */
-  --foreground: #e2e8f0; /* primary text from PRD */
+  --background: var(--color-page-bg);
+  --foreground: #e2e8f0;
 }
 
 body {
