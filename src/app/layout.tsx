@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     siteName: "SyntaxPad",
     type: "website",
   },
+  verification: {
+    google: "sWdI17S5PI7GilWleASi3Ruqjxa4ImCwP5QG3TIQURw",
+  },
 };
 
 export default function RootLayout({
