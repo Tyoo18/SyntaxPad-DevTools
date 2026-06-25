@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ConventionalCommitClient from "./client";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Conventional Commit Generator — Git Commit Message Formatter",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ConventionalCommitPage() {
-  return <ConventionalCommitClient />;
+  redirect("/");
 }

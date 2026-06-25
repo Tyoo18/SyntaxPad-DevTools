@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import EnvBoilerplateClient from "./client";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: ".ENV Boilerplate Generator — Environment Variable Template",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function EnvBoilerplatePage() {
-  return <EnvBoilerplateClient />;
+  redirect("/");
 }

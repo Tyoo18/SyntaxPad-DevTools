@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ReadmeGeneratorClient from "./client";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "README Generator — Create GitHub README Online",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ReadmeGeneratorPage() {
-  return <ReadmeGeneratorClient />;
+  redirect("/");
 }
