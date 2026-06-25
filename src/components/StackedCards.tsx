@@ -125,7 +125,7 @@ export default function StackedCards({
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-xs mx-auto h-[400px] flex items-center justify-center cursor-ns-resize"
+      className="relative w-full max-w-xs mx-auto h-100 flex items-center justify-center cursor-ns-resize"
     >
       <motion.div
         drag="y"

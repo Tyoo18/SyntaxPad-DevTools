@@ -68,7 +68,7 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
   return (
     // [STYLE]: Fixed height container that gives enough space for all tools
     // and allows inner scrollable areas (e.g., README output) to work properly
-    <div className="w-full h-[580px] bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
+    <div className="w-full h-145 bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
       {renderContent()}
     </div>
   );

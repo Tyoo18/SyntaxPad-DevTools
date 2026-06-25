@@ -13,10 +13,13 @@ export default function Home() {
   const [activeTool, setActiveTool] = useState<string>("readme");
 
   return (
-    <div className="w-screen min-h-screen bg-[var(--color-bg)] text-text font-sans flex flex-col">
+    <div className="relative w-screen min-h-screen bg-(--color-bg) text-text font-sans flex flex-col">
+      {/* Grid Background */}
+      <div className="grid-bg" />
+
       {/* ─── HEADER ─── */}
       {/* [RENDER]: Main Navigation Bar with Fixed Layout Viewports */}
-      <header className="w-full border-b border-border px-6 md:px-10 bg-[var(--color-bg)] z-50 lg:fixed lg:top-0 lg:left-0 lg:right-0 h-14 flex items-center">
+      <header className="relative z-50 w-full border-b border-border px-6 md:px-10 bg-(--color-bg) lg:fixed lg:top-0 lg:left-0 lg:right-0 h-14 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           {/* [RENDER]: High-contrast Bold Brand Identity Typography */}
           <div className="flex items-center gap-2.5">
@@ -31,7 +34,7 @@ export default function Home() {
 
       {/* ─── MAIN ─── */}
       {/* [RENDER]: Core Application Shell Layout Engine */}
-      <main className="flex-1 flex flex-col lg:pt-14">
+      <main className="relative z-10 flex-1 flex flex-col lg:pt-14">
         {/* Hero Section - Full Viewport */}
         <section className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center text-center px-6 lg:pt-14">
           <HeroSection />
@@ -62,7 +65,7 @@ export default function Home() {
 
       {/* ─── FOOTER ─── */}
       {/* [RENDER]: Application Footer Band with Support Call-To-Action */}
-      <footer className="w-full border-t border-border px-6 md:px-10 bg-[var(--color-bg)] z-50 lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-24 flex items-center">
+      <footer className="relative z-50 w-full border-t border-border px-6 md:px-10 bg-(--color-bg) lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-24 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted text-center sm:text-left max-w-xl">
             SyntaxPad is free and always will be. If it saved you time today,
