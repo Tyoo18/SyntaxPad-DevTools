@@ -156,8 +156,8 @@ npm install
         </div>
 
         {/* [STYLE]: Normalized preview box container that utilizes the remaining height completely */}
-        <div className="flex-1 min-h-0 relative">
-          <pre className="w-full h-full font-mono text-xs text-(--color-text) whitespace-pre-wrap bg-(--color-bg)/50 p-4 border border-(--color-border) rounded-lg overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden pr-16">
+        <div className="flex-1 min-h-0 relative overflow-hidden">
+          <pre className="absolute inset-0 font-mono text-xs text-(--color-text) whitespace-pre-wrap bg-(--color-bg)/50 p-4 pb-12 border border-(--color-border) rounded-lg overflow-y-auto scrollbar-none [&::-webkit-scrollbar]:hidden pr-16">
             {output}
           </pre>
 

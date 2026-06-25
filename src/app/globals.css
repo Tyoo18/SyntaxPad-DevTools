@@ -7,33 +7,37 @@
   --spacing-135: 540px;
 }
 
-/* Light theme (default) */
+/* Light theme (default) — clean, minimal, no blue on surfaces */
 :root {
-  --color-bg: #f4f6f9;
+  --color-bg: #f6f8fa;
   --color-surface: #ffffff;
-  --color-elevated: #eef1f5;
-  --color-border: #00000010;
+  --color-elevated: #f0f2f4;
+  --color-border: rgba(0, 0, 0, 0.06);
   --color-accent: #122c4f;
   --color-accent-muted: #5b88b2;
   --color-text: #0a0e17;
   --color-muted: #6b7f96;
-  /* Card borders for light mode */
-  --card-border: rgba(18, 44, 79, 0.15);
-  --card-shadow: 0 2px 8px rgba(18, 44, 79, 0.08);
+  /* Card borders & shadows for light mode — neutral, no blue */
+  --card-border: rgba(0, 0, 0, 0.1);
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 }
 
-/* Dark theme */
+/* Dark theme — true dark, no navy/blue on surfaces */
 .dark {
-  --color-bg: #0a0e17;
-  --color-surface: #122c4f;
-  --color-elevated: #1a3a63;
-  --color-border: #ffffff12;
+  --color-bg: #0a0a0a;
+  --color-surface: #181818;
+  --color-elevated: #222222;
+  --color-border: rgba(255, 255, 255, 0.06);
   --color-accent: #5b88b2;
   --color-accent-muted: #3a6491;
   --color-text: #f0f4f8;
-  --color-muted: #5b88b2;
+  --color-muted: #8a9baa;
   --card-border: rgba(255, 255, 255, 0.07);
   --card-shadow: none;
+}
+
+html {
+  overflow-x: hidden;
 }
 
 /* Base body with layered background */
@@ -41,7 +45,6 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  overflow-x: hidden;
   background-image:
     radial-gradient(
       ellipse 80% 50% at 50% -10%,

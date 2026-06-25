@@ -10,7 +10,13 @@ interface WorkspaceProps {
 }
 
 // [INIT]: List of tools that are not yet available
-const COMING_SOON_TOOLS = ["json-env", "changelog", "cron"];
+const COMING_SOON_TOOLS = [
+  "json-env",
+  "changelog",
+  "cron",
+  "dockerfile",
+  "githooks",
+];
 
 export default function Workspace({ activeTool }: WorkspaceProps) {
   // [RENDER]: Coming Soon placeholder for unreleased tools
@@ -60,8 +66,9 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
   };
 
   return (
-    // [STYLE]: Locked fixed height layout container that guarantees zero layout shifting or chin gaps
-    <div className="w-full h-116 bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
+    // [STYLE]: Fixed height container that gives enough space for all tools
+    // and allows inner scrollable areas (e.g., README output) to work properly
+    <div className="w-full h-[580px] bg-(--color-surface) border border-(--color-border) rounded-2xl overflow-hidden">
       {renderContent()}
     </div>
   );

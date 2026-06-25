@@ -45,6 +45,18 @@ const TOOLS_REGISTRY = [
     desc: "Visual schedule validator execution model",
     status: "soon",
   },
+  {
+    id: "dockerfile",
+    title: "Dockerfile Generator",
+    desc: "Generate production-ready Dockerfiles for any stack",
+    status: "soon",
+  },
+  {
+    id: "githooks",
+    title: "Git Hooks Manager",
+    desc: "Set up pre-commit and pre-push hooks visually",
+    status: "soon",
+  },
 ];
 
 export default function StackedCards({
@@ -52,7 +64,6 @@ export default function StackedCards({
   onSelectTool,
 }: StackedCardsProps) {
   const [virtualIndex, setVirtualIndex] = useState<number>(0);
-  // [STATE]: Animation lock using ref (synchronous, no re-render)
   const isAnimating = useRef<boolean>(false);
   const totalItems = TOOLS_REGISTRY.length;
 
@@ -62,19 +73,19 @@ export default function StackedCards({
     onSelectTool(TOOLS_REGISTRY[wrappedIndex].id);
   }, [wrappedIndex, onSelectTool]);
 
-  // [HANDLER]: Step the carousel with lock
   const handleStep = (direction: number) => {
     if (isAnimating.current) return;
     isAnimating.current = true;
     setVirtualIndex((prev) => prev + direction);
   };
 
-  // [HANDLER]: Animation complete – unlock
   const handleAnimationComplete = () => {
     isAnimating.current = false;
   };
 
   const handleWheelRotation = (e: React.WheelEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (isAnimating.current) return;
     if (Math.abs(e.deltaY) < 15) return;
     const direction = e.deltaY > 0 ? 1 : -1;
@@ -91,10 +102,30 @@ export default function StackedCards({
     }
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isAnimating.current) return;
+      if (Math.abs(e.deltaY) < 15) return;
+      const direction = e.deltaY > 0 ? 1 : -1;
+      handleStep(direction);
+    };
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
+  }, []);
+
+  // [STACK]: Show 5 cards at a time (offsets -2 … +2)
+  const visibleRange = 2;
+
   return (
     <div
-      onWheel={handleWheelRotation}
-      className="relative w-full max-w-xs mx-auto h-72 flex items-center justify-center cursor-ns-resize"
+      ref={containerRef}
+      className="relative w-full max-w-xs mx-auto h-[400px] flex items-center justify-center cursor-ns-resize"
     >
       <motion.div
         drag="y"
@@ -109,13 +140,30 @@ export default function StackedCards({
           if (offsetDistance > totalItems / 2) offsetDistance -= totalItems;
           if (offsetDistance < -totalItems / 2) offsetDistance += totalItems;
 
-          const isVisible = Math.abs(offsetDistance) <= 1;
+          const isVisible = Math.abs(offsetDistance) <= visibleRange;
           if (!isVisible) return null;
 
-          const targetY = offsetDistance * 80;
-          const targetScale = offsetDistance === 0 ? 1 : 0.9;
-          const targetOpacity = offsetDistance === 0 ? 1 : 0.5;
-          const targetZIndex = offsetDistance === 0 ? 20 : 10;
+          // [STACK]: 5-card progressive stacking
+          const spacing = 62;
+          const targetY = offsetDistance * spacing;
+
+          let targetScale = 1;
+          let targetOpacity = 1;
+          let targetZIndex = 10;
+
+          if (offsetDistance === 0) {
+            targetScale = 1;
+            targetOpacity = 1;
+            targetZIndex = 20;
+          } else if (Math.abs(offsetDistance) === 1) {
+            targetScale = 0.92;
+            targetOpacity = 0.7;
+            targetZIndex = 15;
+          } else if (Math.abs(offsetDistance) === 2) {
+            targetScale = 0.84;
+            targetOpacity = 0.4;
+            targetZIndex = 10;
+          }
 
           const isActive = offsetDistance === 0;
 

@@ -13,10 +13,10 @@ export default function Home() {
   const [activeTool, setActiveTool] = useState<string>("readme");
 
   return (
-    <div className="w-screen h-screen bg-bg text-text font-sans flex flex-col overflow-hidden">
+    <div className="w-screen min-h-screen bg-[var(--color-bg)] text-text font-sans flex flex-col">
       {/* ─── HEADER ─── */}
       {/* [RENDER]: Main Navigation Bar with Fixed Layout Viewports */}
-      <header className="w-full border-b border-border px-6 md:px-10 bg-bg z-50 lg:fixed lg:top-0 lg:left-0 lg:right-0 h-14 flex items-center">
+      <header className="w-full border-b border-border px-6 md:px-10 bg-[var(--color-bg)] z-50 lg:fixed lg:top-0 lg:left-0 lg:right-0 h-14 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           {/* [RENDER]: High-contrast Bold Brand Identity Typography */}
           <div className="flex items-center gap-2.5">
@@ -31,16 +31,21 @@ export default function Home() {
 
       {/* ─── MAIN ─── */}
       {/* [RENDER]: Core Application Shell Layout Engine */}
-      <main className="flex-1 flex flex-col overflow-hidden lg:pt-14 lg:pb-14">
-        <div className="flex-1 flex flex-col px-6 md:px-10 py-6 lg:py-0 overflow-hidden">
-          <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col overflow-hidden">
-            <HeroSection />
+      <main className="flex-1 flex flex-col lg:pt-14">
+        {/* Hero Section - Full Viewport */}
+        <section className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center text-center px-6 lg:pt-14">
+          <HeroSection />
+        </section>
 
-            {/* Grid with fixed left column width (320px) */}
-            {/* [STYLE]: Layout grid configuration tuned with vertical center alignment */}
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-center overflow-hidden">
+        {/* Workspace Section - Scroll target */}
+        <section
+          id="workspace"
+          className="min-h-screen px-6 md:px-10 py-20 flex items-center"
+        >
+          <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-center">
               {/* [RENDER]: Centered container node for stacked utility tool selection cards */}
-              <div className="flex justify-center items-stretch h-full mt-48">
+              <div className="flex justify-center items-center h-full">
                 <StackedCards
                   activeTool={activeTool}
                   onSelectTool={setActiveTool}
@@ -52,12 +57,12 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
 
       {/* ─── FOOTER ─── */}
       {/* [RENDER]: Application Footer Band with Support Call-To-Action */}
-      <footer className="w-full border-t border-border px-6 md:px-10 bg-bg z-50 lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-24 flex items-center">
+      <footer className="w-full border-t border-border px-6 md:px-10 bg-[var(--color-bg)] z-50 lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-24 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted text-center sm:text-left max-w-xl">
             SyntaxPad is free and always will be. If it saved you time today,
