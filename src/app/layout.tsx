@@ -14,9 +14,17 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SyntaxPad | Minimalist Developer Utilities",
+  metadataBase: new URL("https://syntaxpad.vercel.app"), // ganti domain kalau sudah custom
+  title: {
+    default: "SyntaxPad — Free Developer Utility Tools Online",
+    template: "%s | SyntaxPad",
+  },
   description:
-    "Super fast, polished, and instant code text utility generator for hackers.",
+    "SyntaxPad is a free minimalist toolkit for developers. Generate README files, .env boilerplates, and conventional commit messages — all in one place.",
+  openGraph: {
+    siteName: "SyntaxPad",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
