@@ -69,16 +69,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted text-center sm:text-left max-w-xl">
             SyntaxPad is free and always will be. If it saved you time today,
-            consider buying me a coffee — it helps keep the domain alive. ☕
+            consider buying me a coffee☕
           </p>
-          {/* <a
-            href="https://buymeacoffee.com"
+          <a
+            href="https://ko-fi.com/tyoshere"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium px-4 py-2 rounded-lg bg-elevated hover:bg-accent hover:text-white transition-colors duration-200"
           >
-            ☕ Buy Me a Coffee
-          </a> */}
+            ☕ Ko-fi
+          </a>
         </div>
       </footer>
     </div>
