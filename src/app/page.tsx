@@ -71,14 +71,14 @@ export default function Home() {
             SyntaxPad is free and always will be. If it saved you time today,
             consider buying me a coffee — it helps keep the domain alive. ☕
           </p>
-          <a
+          {/* <a
             href="https://buymeacoffee.com"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium px-4 py-2 rounded-lg bg-elevated hover:bg-accent hover:text-white transition-colors duration-200"
           >
             ☕ Buy Me a Coffee
-          </a>
+          </a> */}
         </div>
       </footer>
     </div>
