@@ -1,16 +1,48 @@
 "use client";
 
-// [INIT]: Import layout management states and core visual elements
-import { useState } from "react";
+// [INIT]: Import React hooks, sub-components, and interface icons
+import { useState, useEffect } from "react";
 import StackedCards from "@/components/StackedCards";
 import Workspace from "@/components/Workspace";
 import HeroSection from "@/components/HeroSection";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Terminal } from "lucide-react";
 
-export default function Home() {
-  // [STATE]: Track currently active developer utility tool
-  const [activeTool, setActiveTool] = useState<string>("readme");
+interface MainAppShellProps {
+  initialToolKey: string;
+  slugToKeyMap: Record<string, string>;
+}
+
+export default function MainAppShell({
+  initialToolKey,
+  slugToKeyMap,
+}: MainAppShellProps) {
+  // [STATE]: Initialize active utility state bound to hydrated server parameter
+  const [activeTool, setActiveTool] = useState<string>(initialToolKey);
+
+  // [HANDLER]: Watch active tool changes and execute zero-flicker URL state synchronization
+  useEffect(() => {
+    // [UTIL]: Find the correct URL slug matching the current active state string value
+    const currentSlug = Object.keys(slugToKeyMap).find(
+      (slug) => slugToKeyMap[slug] === activeTool,
+    );
+
+    // [VALIDATE]: Calculate next path target or fall back to base layout path index
+    const newPath = currentSlug ? `/${currentSlug}` : "/";
+
+    // [UTIL]: Debug log to easily track down mismatches in developer console
+    console.log(
+      "🛠️ NEXT PATH TRACKER -> State:",
+      activeTool,
+      "| Resolved URL Path:",
+      newPath,
+    );
+
+    // [HANDLER]: Inject updated route identifier silently into browser location address bar
+    if (window.location.pathname !== newPath) {
+      window.history.replaceState(null, "", newPath);
+    }
+  }, [activeTool, slugToKeyMap]);
 
   return (
     <div className="relative w-screen min-h-screen bg-(--color-bg) text-text font-sans flex flex-col">
@@ -18,10 +50,8 @@ export default function Home() {
       <div className="grid-bg" />
 
       {/* ─── HEADER ─── */}
-      {/* [RENDER]: Main Navigation Bar with Fixed Layout Viewports */}
       <header className="relative z-50 w-full border-b border-border px-6 md:px-10 bg-(--color-bg) lg:fixed lg:top-0 lg:left-0 lg:right-0 h-14 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-          {/* [RENDER]: High-contrast Bold Brand Identity Typography */}
           <div className="flex items-center gap-2.5">
             <Terminal className="w-5 h-5 stroke-[2.5] text-accent" />
             <span className="text-lg font-bold tracking-[0.12em] uppercase text-text">
@@ -33,28 +63,23 @@ export default function Home() {
       </header>
 
       {/* ─── MAIN ─── */}
-      {/* [RENDER]: Core Application Shell Layout Engine */}
       <main className="relative z-10 flex-1 flex flex-col lg:pt-14">
-        {/* Hero Section - Full Viewport */}
         <section className="min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center text-center px-6 lg:pt-14">
           <HeroSection />
         </section>
 
-        {/* Workspace Section - Scroll target */}
         <section
           id="workspace"
           className="min-h-screen px-6 md:px-10 py-20 flex items-center"
         >
           <div className="max-w-7xl mx-auto w-full flex flex-col justify-center">
             <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-center">
-              {/* [RENDER]: Centered container node for stacked utility tool selection cards */}
               <div className="flex justify-center items-center h-full">
                 <StackedCards
                   activeTool={activeTool}
                   onSelectTool={setActiveTool}
                 />
               </div>
-              {/* [RENDER]: Workspace viewport component container rendering selected node layout */}
               <div className="h-full w-full">
                 <Workspace activeTool={activeTool} />
               </div>
@@ -64,7 +89,6 @@ export default function Home() {
       </main>
 
       {/* ─── FOOTER ─── */}
-      {/* [RENDER]: Application Footer Band with Support Call-To-Action */}
       <footer className="relative z-50 w-full border-t border-border px-6 md:px-10 bg-(--color-bg) lg:fixed lg:bottom-0 lg:left-0 lg:right-0 h-24 flex items-center">
         <div className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted text-center sm:text-left max-w-xl">
