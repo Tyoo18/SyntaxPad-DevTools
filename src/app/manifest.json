@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "SyntaxPad",
+  "short_name": "syntaxpad",
   "icons": [
     {
       "src": "/public/web-app-manifest-192x192.png",
