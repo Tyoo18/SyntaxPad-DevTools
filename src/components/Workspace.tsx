@@ -4,19 +4,16 @@
 import ReadmeBuilder from "@/tools/readme-builder";
 import CommitBuilder from "@/tools/commit-builder";
 import EnvBoilerplate from "@/tools/env-boilerplate";
+import JsonEnvConverter from "@/tools/json-env-converter";
+import ChangelogGenerator from "@/tools/changelog-generator";
+import CronBuilder from "@/tools/cron-builder";
 
 interface WorkspaceProps {
   activeTool: string;
 }
 
 // [INIT]: List of tools that are not yet available
-const COMING_SOON_TOOLS = [
-  "json-env",
-  "changelog",
-  "cron",
-  "dockerfile",
-  "githooks",
-];
+const COMING_SOON_TOOLS = ["dockerfile", "githooks"]; // removed "cron"
 
 export default function Workspace({ activeTool }: WorkspaceProps) {
   // [RENDER]: Coming Soon placeholder for unreleased tools
@@ -56,6 +53,12 @@ export default function Workspace({ activeTool }: WorkspaceProps) {
         return <CommitBuilder />;
       case "env":
         return <EnvBoilerplate />;
+      case "json-env":
+        return <JsonEnvConverter />;
+      case "changelog":
+        return <ChangelogGenerator />;
+      case "cron":
+        return <CronBuilder />;
       default:
         return (
           <div className="w-full h-full flex items-center justify-center text-(--color-muted) font-mono text-sm">

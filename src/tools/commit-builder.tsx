@@ -118,10 +118,7 @@ export default function CommitBuilder() {
       <div className="p-6 bg-(--color-elevated)/40 flex flex-col h-full relative">
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)">
-            Preview Node
-          </span>
-          <span className="text-xs font-mono text-(--color-muted)/60">
-            CM_ENGINE
+            Preview
           </span>
         </div>
 
